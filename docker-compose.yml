@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_DB: ${POSTGRESQL_DATABASE}
+    networks:
+      - network
+    env_file:
+      - .env
+  authorization-server:
+    build: ./authorization-server
+    ports:
+      - "9000:9000"
+    networks:
+      - network
+    env_file:
+      - .env
+
+networks:
+  network:
+    driver: bridge
