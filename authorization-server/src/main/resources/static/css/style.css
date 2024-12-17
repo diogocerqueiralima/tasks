@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+* {
+
+    margin: 0;
+    padding: 0;
+    border: none;
+
+}
+
+:root {
+
+    --background: #212529;
+    --foreground: #343a40;
+    --text: #ced4da;
+    --highlight: #47a5d1;
+
+}
+
+.roboto-regular {
+    font-family: "Roboto", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.roboto-bold {
+    font-family: "Roboto", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.title {
+
+    color: var(--text);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-size: 24px;
+
+}
+
+main {
+
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background);
+
+}
+
+main .content {
+
+    border-radius: 10px;
+    background-color: var(--foreground);
+    width: fit-content;
+    padding: 60px 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+
+}
+
+main .content form {
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+
+}
+
+main .content form label {
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: var(--text);
+
+}
+
+main .content .inputs {
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+main .content form .the_input {
+
+    background-color: var(--background);
+    border-radius: 10px;
+    padding: 5px 10px;
+    color: var(--text);
+    border: 1px solid var(--foreground);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    transition: 0.5s;
+
+}
+
+main .content form input {
+
+    border: 1px solid var(--background);
+    background-color: var(--background);
+    outline: none;
+    font-size: 16px;
+    color: inherit;
+
+}
+
+main .content form .the_input:focus-within {
+
+    border: 1px solid var(--highlight);
+
+}
+
+main .content form button {
+
+    padding: 10px 40px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    border: 1px solid var(--background);
+    background-color: var(--background);
+    color: var(--text);
+    transition: 0.5s;
+    width: 100%;
+
+}
+
+main .content form button:hover {
+
+    cursor: pointer;
+    opacity: 0.7;
+
+}
+
+main .content form a {
+
+    text-align: right;
+    width: 100%;
+
+}
+
+main p {
+
+    color: var(--text);
+
+}
+
+main a {
+
+    text-decoration: none;
+    transition: 0.5s;
+    color: var(--highlight);
+    font-weight: bold;
+    font-size: 14px;
+
+}
+
+main a:hover {
+
+    opacity: 0.8;
+
+}
+
+main .paths {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.content .separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--background);
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.content .separator::before,
+.content .separator::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid var(--background);
+    margin: 0 10px;
+}
+
+.content .social-login {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+
+}
+
+.content .social-login a {
+
+    background-color: var(--background);
+    padding: 10px 40px;
+    border-radius: 10px;
+
+}
+
+img {
+
+    width: 25px;
+
+}

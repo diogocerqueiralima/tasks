@@ -37,7 +37,7 @@ class SecurityConfig {
             .exceptionHandling { exceptions ->
                 exceptions
                     .defaultAuthenticationEntryPointFor(
-                        LoginUrlAuthenticationEntryPoint("/login"),
+                        LoginUrlAuthenticationEntryPoint("/auth/login"),
                         MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                     )
             }
@@ -52,10 +52,13 @@ class SecurityConfig {
         return http
             .authorizeHttpRequests { authorize ->
                 authorize
-                    .requestMatchers("/public/**").permitAll()
+                    .requestMatchers("/css/**", "/img/**").permitAll()
                     .anyRequest().authenticated()
             }
-            .formLogin(Customizer.withDefaults())
+            .formLogin { login ->
+                login
+                    .loginPage("/auth/login").permitAll()
+            }
             .build()
     }
 
