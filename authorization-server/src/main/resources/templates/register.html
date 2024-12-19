@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tasks - Login</title>
+    <title>Tasks - Register</title>
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
@@ -15,20 +15,30 @@
 
         <div class="content">
 
-            <h3 class="title">Entrar</h3>
+            <h3 class="title">Criar Conta</h3>
 
-            <form method="post">
+            <form method="post" th:object="${user}">
 
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
                 <div class="inputs">
 
                     <label>
+                        E-mail
+
+                        <div class="the_input">
+                            <i class='bx bx-envelope'></i>
+                            <input name="email" placeholder="tasks@email.com" type="text" th:field="*{email}">
+                        </div>
+
+                    </label>
+
+                    <label>
                         Nome de utilizador
 
                         <div class="the_input">
                             <i class='bx bx-user'></i>
-                            <input name="username" placeholder="tasks" type="text">
+                            <input name="username" placeholder="tasks" type="text" th:field="*{username}">
                         </div>
 
                     </label>
@@ -38,20 +48,27 @@
 
                         <div class="the_input">
                             <i class='bx bx-lock-alt' ></i>
-                            <input name="password" placeholder="*******" type="password">
+                            <input name="password" placeholder="*******" type="password" th:field="*{password}">
                         </div>
+
+                    </label>
+
+                    <label>
+                        Confirmar senha
+
+                        <div class="the_input">
+                            <i class='bx bx-lock-alt' ></i>
+                            <input name="password" placeholder="*******" type="password" th:field="*{confirmPassword}">
+                        </div>
+
                     </label>
 
                 </div>
 
-                <a href="/" th:href="@{/auth/forgot}">Esqueci-me da senha</a>
-                <button type="submit">Entrar</button>
+                <a href="/" th:href="@{/auth/login}">Já tenho uma conta</a>
+                <button type="submit">Continuar</button>
 
             </form>
-
-            <div class="paths">
-                <p>Ainda não tenho uma conta. <a href="/" th:href="@{/auth/register}">Clique para criar</a></p>
-            </div>
 
             <div class="separator">ou</div>
 

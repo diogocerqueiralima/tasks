@@ -52,12 +52,13 @@ class SecurityConfig {
         return http
             .authorizeHttpRequests { authorize ->
                 authorize
-                    .requestMatchers("/css/**", "/img/**").permitAll()
+                    .requestMatchers("/css/**", "/img/**", "/auth/**").permitAll()
                     .anyRequest().authenticated()
             }
             .formLogin { login ->
                 login
-                    .loginPage("/auth/login").permitAll()
+                    .loginPage("/auth/login")
+                    .permitAll()
             }
             .build()
     }
