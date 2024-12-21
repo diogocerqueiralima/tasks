@@ -31,17 +31,17 @@ class AuthenticationController(
     @PostMapping("/register")
     fun createAccount(@ModelAttribute dto: UserRegisterDto): String {
 
-        //check if passwords are equals
-        //check if there is no username equal to this
-        //check if there is no email equal to this
-
         userService.create(
             username = dto.username,
             email = dto.email,
-            password = dto.password
+            password = dto.password,
+            confirmPassword = dto.confirmPassword
         )
 
         return "redirect:/auth/login"
     }
+
+    @GetMapping("/forgot")
+    fun forgotPassword() = "forgot-password"
 
 }
