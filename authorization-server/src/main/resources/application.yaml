@@ -11,6 +11,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  kafka:
+    producer:
+      bootstrap-servers: broker:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: 0
 server:
   port: 9000
 

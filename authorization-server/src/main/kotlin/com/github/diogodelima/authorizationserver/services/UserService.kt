@@ -1,9 +1,11 @@
 package com.github.diogodelima.authorizationserver.services
 
 import com.github.diogodelima.authorizationserver.domain.User
+import com.github.diogodelima.authorizationserver.dto.UserForgotPasswordDto
 import com.github.diogodelima.authorizationserver.exception.PasswordNotMatchException
 import com.github.diogodelima.authorizationserver.exception.UserAlreadyExistsException
 import com.github.diogodelima.authorizationserver.repositories.UserRepository
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -13,7 +15,8 @@ import org.springframework.stereotype.Service
 class UserService(
 
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val kafkaTemplate: KafkaTemplate<String, UserForgotPasswordDto>
 
 ) : UserDetailsService {
 
@@ -36,6 +39,13 @@ class UserService(
             )
         )
 
+    }
+
+    fun requestEmailToResetPassword(dto: UserForgotPasswordDto) {
+
+        userRepository.findUserByUsername(dto.usernameOrEmail) ?: userRepository.findUserByEmail(dto.usernameOrEmail) ?: throw UsernameNotFoundException("User ${dto.usernameOrEmail} not found")
+
+        kafkaTemplate.send("forgot-password", dto)
     }
 
 }

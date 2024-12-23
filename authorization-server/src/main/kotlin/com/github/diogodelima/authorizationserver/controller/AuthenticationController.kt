@@ -1,5 +1,6 @@
 package com.github.diogodelima.authorizationserver.controller
 
+import com.github.diogodelima.authorizationserver.dto.UserForgotPasswordDto
 import com.github.diogodelima.authorizationserver.dto.UserRegisterDto
 import com.github.diogodelima.authorizationserver.services.UserService
 import org.springframework.stereotype.Controller
@@ -42,6 +43,19 @@ class AuthenticationController(
     }
 
     @GetMapping("/forgot")
-    fun forgotPassword() = "forgot-password"
+    fun forgotPassword(model: Model): String {
+
+        model.addAttribute("user", UserForgotPasswordDto())
+
+        return "forgot-password"
+    }
+
+    @PostMapping("/forgot")
+    fun requestForgotEmail(@ModelAttribute dto: UserForgotPasswordDto): String {
+
+        userService.requestEmailToResetPassword(dto)
+
+        return "redirect:/auth/login"
+    }
 
 }
