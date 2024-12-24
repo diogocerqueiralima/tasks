@@ -43,9 +43,9 @@ class UserService(
 
     fun requestEmailToResetPassword(dto: UserForgotPasswordDto) {
 
-        userRepository.findUserByUsername(dto.usernameOrEmail) ?: userRepository.findUserByEmail(dto.usernameOrEmail) ?: throw UsernameNotFoundException("User ${dto.usernameOrEmail} not found")
+        val user = userRepository.findUserByUsername(dto.username) ?: userRepository.findUserByEmail(dto.username) ?: throw UsernameNotFoundException("User ${dto.username} not found")
 
-        kafkaTemplate.send("forgot-password", dto)
+        kafkaTemplate.send("forgot-password", dto.copy(username = user.username, email = user.email, url = "https://google.pt"))
     }
 
 }

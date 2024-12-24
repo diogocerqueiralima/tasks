@@ -5,7 +5,9 @@ spring:
     consumer:
       bootstrap-servers: broker:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.value.default.type: "com.github.diogodelima.emailservice.dto.UserForgotPasswordDto"
       group-id: email-service
   mail:
     default-encoding: UTF-8
