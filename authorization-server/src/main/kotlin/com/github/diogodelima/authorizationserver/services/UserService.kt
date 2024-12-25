@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service
 class UserService(
 
     private val userRepository: UserRepository,
+    private val resetPasswordService: ResetPasswordService,
     private val passwordEncoder: PasswordEncoder,
     private val kafkaTemplate: KafkaTemplate<String, UserForgotPasswordDto>
 
@@ -44,8 +45,13 @@ class UserService(
     fun requestEmailToResetPassword(dto: UserForgotPasswordDto) {
 
         val user = userRepository.findUserByUsername(dto.username) ?: userRepository.findUserByEmail(dto.username) ?: throw UsernameNotFoundException("User ${dto.username} not found")
+        val resetPassword = resetPasswordService.getResetPassword(user)
 
-        kafkaTemplate.send("forgot-password", dto.copy(username = user.username, email = user.email, url = "https://google.pt"))
+        kafkaTemplate.send("forgot-password", dto.copy(username = user.username, email = user.email, url = "http://localhost:9000/auth/reset?token=${resetPassword.token}"))
+    }
+
+    fun resetPassword(token: String, password: String) {
+
     }
 
 }
