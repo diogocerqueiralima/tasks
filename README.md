@@ -5,6 +5,7 @@ This is a simple task management application API that allows users to manage tas
 # Features
 
 - User Authentication: OAuth2-based login using authorization code flow with PKCE.
+- Reset Password: via registered e-mail
 - Task Management: [CRUD](https://www.codecademy.com/article/what-is-crud)
 
 # Technologies
@@ -15,4 +16,5 @@ This is a simple task management application API that allows users to manage tas
 - API Documentation: [Swagger](https://swagger.io/)
 - Build Tools: [Gradle](https://gradle.org/)
 - Deploy: [Docker](https://www.docker.com/)
+- Communication between microservices: [Apache Kafka](https://kafka.apache.org/)
 - Testing: [Mockito](https://site.mockito.org/), [Postman](https://www.postman.com/) for manual testing
