@@ -14,6 +14,7 @@
     --foreground: #343a40;
     --text: #ced4da;
     --highlight: #47a5d1;
+    --error: #f54242;
 
 }
 
@@ -37,6 +38,27 @@
     margin-bottom: 20px;
     font-size: 24px;
     text-align: center;
+
+}
+
+.error {
+
+    width: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    margin: 30px -80px;
+
+}
+
+.error p {
+
+    width: fit-content;
+    background-color: var(--error);
+    padding: 10px 80px;
+    border-radius: 3px;
+    color: var(--text);
 
 }
 

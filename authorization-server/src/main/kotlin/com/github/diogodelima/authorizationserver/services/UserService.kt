@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class UserService(
@@ -45,12 +46,21 @@ class UserService(
     fun requestEmailToResetPassword(dto: UserForgotPasswordDto) {
 
         val user = userRepository.findUserByUsername(dto.username) ?: userRepository.findUserByEmail(dto.username) ?: throw UsernameNotFoundException("User ${dto.username} not found")
-        val resetPassword = resetPasswordService.getResetPassword(user)
+        val resetPassword = resetPasswordService.getResetPasswordByUser(user)
 
         kafkaTemplate.send("forgot-password", dto.copy(username = user.username, email = user.email, url = "http://localhost:9000/auth/reset?token=${resetPassword.token}"))
     }
 
-    fun resetPassword(token: String, password: String) {
+    fun resetPassword(token: UUID, password: String) {
+
+        val resetPassword = resetPasswordService.getResetPasswordByToken(token)
+        val user = resetPassword.user
+
+        resetPasswordService.deleteResetPassword(resetPassword)
+
+        userRepository.save(
+            user.copy(password = passwordEncoder.encode(password))
+        )
 
     }
 

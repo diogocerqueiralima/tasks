@@ -14,7 +14,7 @@ data class ResetPassword(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
 
-    val token: String = UUID.randomUUID().toString(),
+    val token: UUID = UUID.randomUUID(),
 
     val createdAt: Long = Instant.now().toEpochMilli(),
 

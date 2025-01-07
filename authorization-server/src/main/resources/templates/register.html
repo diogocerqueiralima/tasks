@@ -5,21 +5,25 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tasks - Register</title>
+    <title>Tasks - Create Account</title>
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body class="roboto-regular">
 
-    <main>
-
-        <p th:if="${param.error}">
-            Error
+    <div class="error" th:if="${param.error != null}">
+        <p th:switch="${#strings.toString(param.error)}">
+            <span th:case="'PASSWORD_NOT_MATCH'">As senhas não coincidem.</span>
+            <span th:case="'USER_ALREADY_EXISTS'">Utilizador já registrado.</span>
+            <span th:case="*">Ocorreu um erro inesperado.</span>
         </p>
+    </div>
+
+    <main>
 
         <div class="content">
 
-            <h3 class="title">Criar Conta</h3>
+            <h3 class="title">Create Account</h3>
 
             <form method="post" th:object="${user}">
 
@@ -38,7 +42,7 @@
                     </label>
 
                     <label>
-                        Nome de utilizador
+                        Username
 
                         <div class="the_input">
                             <i class='bx bx-user'></i>
@@ -48,7 +52,7 @@
                     </label>
 
                     <label>
-                        Senha
+                        Password
 
                         <div class="the_input">
                             <i class='bx bx-lock-alt' ></i>
@@ -58,7 +62,7 @@
                     </label>
 
                     <label>
-                        Confirmar senha
+                        Confirm password
 
                         <div class="the_input">
                             <i class='bx bx-lock-alt' ></i>
@@ -69,8 +73,8 @@
 
                 </div>
 
-                <a href="/" th:href="@{/auth/login}">Já tenho uma conta</a>
-                <button type="submit">Continuar</button>
+                <a href="/" th:href="@{/auth/login}">I already have an account</a>
+                <button type="submit">Proceed</button>
 
             </form>
 

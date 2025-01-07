@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import java.util.UUID
 
 @Controller
 @RequestMapping("/auth")
@@ -61,7 +62,7 @@ class AuthenticationController(
     }
 
     @GetMapping("/reset")
-    fun resetPassword(@RequestParam token: String, model: Model): String {
+    fun resetPassword(@RequestParam token: UUID, model: Model): String {
 
         model.addAttribute("user", UserResetPasswordDto(token = token))
 

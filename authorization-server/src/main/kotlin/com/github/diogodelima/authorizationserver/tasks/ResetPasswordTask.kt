@@ -18,7 +18,6 @@ class ResetPasswordTask(
     @Transactional
     fun deleteResetPasswordTask() {
         resetPasswordRepository.deleteResetPasswordByCreatedAtBefore(Instant.now().toEpochMilli() - LIFETIME)
-        println("Deleted reset password")
     }
 
 }
