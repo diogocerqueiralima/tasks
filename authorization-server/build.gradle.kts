@@ -32,8 +32,10 @@ dependencies {
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("org.springframework.kafka:spring-kafka-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	"developmentOnly"("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
+	runtimeOnly("com.h2database:h2")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
