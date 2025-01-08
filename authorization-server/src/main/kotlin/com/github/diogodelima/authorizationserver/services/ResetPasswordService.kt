@@ -18,7 +18,7 @@ class ResetPasswordService(
 
     fun getResetPasswordByUser(user: User): ResetPassword {
 
-        var resetPassword = resetPasswordRepository.findResetPasswordByUserAndCreatedAtBefore(user) ?: resetPasswordRepository.save(
+        var resetPassword = resetPasswordRepository.findResetPasswordByUser(user) ?: resetPasswordRepository.save(
             ResetPassword(user = user)
         )
 

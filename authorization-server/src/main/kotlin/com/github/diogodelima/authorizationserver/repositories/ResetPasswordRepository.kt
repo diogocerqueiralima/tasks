@@ -8,7 +8,7 @@ import java.util.UUID
 
 interface ResetPasswordRepository : JpaRepository<ResetPassword, Int> {
 
-    fun findResetPasswordByUserAndCreatedAtBefore(user: User, createdAtBefore: Long = Instant.now().toEpochMilli()): ResetPassword?
+    fun findResetPasswordByUser(user: User): ResetPassword?
 
     fun findByToken(token: UUID): ResetPassword?
 
