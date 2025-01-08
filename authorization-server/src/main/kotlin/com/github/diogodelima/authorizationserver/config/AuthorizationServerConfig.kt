@@ -10,6 +10,7 @@ class AuthorizationServerConfig {
     @Bean
     fun authorizationServerSettings(): AuthorizationServerSettings =
         AuthorizationServerSettings.builder()
+            .issuer("http://authorization-server:9000")
             .build()
 
 }

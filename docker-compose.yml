@@ -41,14 +41,28 @@ services:
       - postgres
   email-service:
     build: ./email-service
-    ports:
-      - "8000:8080"
     networks:
       - network
     env_file:
       - .env
     depends_on:
       - broker
+  tasks-service:
+    build: ./tasks-service
+    networks:
+      - network
+    env_file:
+      - .env
+  gateway:
+    build: ./gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - network
+    depends_on:
+      - email-service
+      - authorization-server
+      - tasks-service
 
 networks:
   network:
