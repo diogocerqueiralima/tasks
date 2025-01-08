@@ -46,7 +46,7 @@ class AuthorizationServerTest(
 	}
 
 	@Test
-	fun `requesting the authorization endpoint without being authenticated should redirect to the login page`() {
+	fun `requesting any endpoint without being authenticated should redirect to the login page`() {
 
 		val codeVerifier = generateCodeVerifier()
 		val codeChallenge = generateCodeChallenge(codeVerifier)
