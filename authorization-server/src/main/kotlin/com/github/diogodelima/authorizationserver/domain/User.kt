@@ -4,6 +4,7 @@ import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.time.Instant
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "users")
@@ -25,7 +26,7 @@ data class User(
     val password: String,
 
     @Column(nullable = false)
-    val createdAt: Long = Instant.now().toEpochMilli()
+    val createdAt: LocalDateTime = LocalDateTime.now()
 
 ) : UserDetails {
 
