@@ -1,5 +1,6 @@
 package com.github.diogodelima.authorizationserver.services
 
+import com.github.diogodelima.authorizationserver.domain.ResetPassword
 import com.github.diogodelima.authorizationserver.domain.User
 import com.github.diogodelima.authorizationserver.dto.UserForgotPasswordDto
 import com.github.diogodelima.authorizationserver.exception.PasswordNotMatchException
@@ -12,6 +13,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import kotlin.test.assertEquals
 
@@ -81,6 +83,45 @@ class UserServiceTest {
 
         val actual = userService.create("username", "username@email.com", password, password)
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `the email request to reset the password with an username that does not exists should fail`() {
+
+        Mockito.`when`(userRepository.findUserByEmail("username@email.com"))
+            .thenReturn(User(username = "username", email = "username@email.com", password = "test"))
+
+        assertThrows<UsernameNotFoundException> {
+            userService.requestEmailToResetPassword(UserForgotPasswordDto(username = "username"))
+        }
+
+    }
+
+    @Test
+    fun `the email request to reset the password with an email that does not exists should fail`() {
+
+        Mockito.`when`(userRepository.findUserByUsername("username"))
+            .thenReturn(User(username = "username", email = "username@email.com", password = "test"))
+
+        assertThrows<UsernameNotFoundException> {
+            userService.requestEmailToResetPassword(UserForgotPasswordDto(email = "username@email.com"))
+        }
+
+    }
+
+    @Test
+    fun `the email request to reset the password should succeed`() {
+
+        val user = User(username = "username", email = "username@email.com", password = "test")
+        val resetPassword = ResetPassword(user = user)
+
+        Mockito.`when`(userRepository.findUserByUsername("username"))
+            .thenReturn(user)
+
+        Mockito.`when`(resetPasswordService.getResetPasswordByUser(user))
+            .thenReturn(resetPassword)
+
+        userService.requestEmailToResetPassword(UserForgotPasswordDto(username = "username"))
     }
 
 }
