@@ -25,7 +25,7 @@ class UserService(
     override fun loadUserByUsername(username: String?): User =
         userRepository.findUserByUsername(username) ?: userRepository.findUserByEmail(username) ?: throw UsernameNotFoundException("User $username not found")
 
-    fun create(username: String, email: String, password: String, confirmPassword: String) {
+    fun create(username: String, email: String, password: String, confirmPassword: String): User {
 
         if (password != confirmPassword)
             throw PasswordNotMatchException()
@@ -33,7 +33,7 @@ class UserService(
         if (userRepository.findUserByUsername(username) != null || userRepository.findUserByEmail(email) != null)
             throw UserAlreadyExistsException()
 
-        userRepository.save(
+        return userRepository.save(
             User(
                 username = username,
                 email = email,
