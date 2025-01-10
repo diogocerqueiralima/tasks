@@ -5,6 +5,7 @@ import com.github.diogodelima.tasksservice.dto.TaskCreateDto
 import com.github.diogodelima.tasksservice.dto.TaskDto
 import com.github.diogodelima.tasksservice.services.TaskService
 import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/tasks")
-class TasksController(
+class TaskController(
 
     private val taskService: TaskService
 
@@ -31,7 +32,8 @@ class TasksController(
         )
 
         return ResponseEntity
-            .ok(
+            .status(HttpStatus.CREATED)
+            .body(
                 ApiResponseDto(
                     message = "Task created successfully",
                     data = TaskDto(

@@ -1,6 +1,9 @@
 package com.github.diogodelima.tasksservice.services
 
 import com.github.diogodelima.tasksservice.domain.Step
+import com.github.diogodelima.tasksservice.domain.Task
+import com.github.diogodelima.tasksservice.exceptions.StepNotFoundException
+import com.github.diogodelima.tasksservice.exceptions.TaskAccessDeniedException
 import com.github.diogodelima.tasksservice.repositories.StepRepository
 import org.springframework.stereotype.Service
 
@@ -22,6 +25,16 @@ class StepService(
                 task = task
             )
         )
+    }
+
+    fun update(stepId: Int, userId: Int, status: Task.Status): Step {
+
+        val step = stepRepository.findById(stepId).orElseThrow { StepNotFoundException() }
+
+        if (step.task.creatorId != userId)
+            throw TaskAccessDeniedException()
+
+        return stepRepository.save(step.copy(status = status))
     }
 
 }

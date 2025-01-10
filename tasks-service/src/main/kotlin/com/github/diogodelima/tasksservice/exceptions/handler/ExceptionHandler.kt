@@ -1,6 +1,7 @@
 package com.github.diogodelima.tasksservice.exceptions.handler
 
 import com.github.diogodelima.tasksservice.dto.ApiResponseDto
+import com.github.diogodelima.tasksservice.exceptions.StepNotFoundException
 import com.github.diogodelima.tasksservice.exceptions.TaskAccessDeniedException
 import com.github.diogodelima.tasksservice.exceptions.TaskNotFoundException
 import org.springframework.http.HttpStatus
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 @RestControllerAdvice
 class ExceptionHandler {
 
-    @ExceptionHandler(TaskNotFoundException::class)
+    @ExceptionHandler(TaskNotFoundException::class, StepNotFoundException::class)
     fun handleNotFound(e: Exception): ResponseEntity<ApiResponseDto<Any>> =
         ResponseEntity
             .status(HttpStatus.NOT_FOUND)
