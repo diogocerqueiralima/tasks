@@ -26,14 +26,17 @@ data class Task(
     @Column(nullable = false)
     val creatorId: Int,
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    val status: Status = Status.PENDING,
-
     @OneToMany(fetch = FetchType.EAGER, cascade = [(CascadeType.ALL)], mappedBy = "task", orphanRemoval = true)
     val steps: List<Step> = emptyList()
 
 ) {
+
+    val status: Status
+        get() = when {
+            steps.all { it.status == Status.COMPLETED } -> Status.COMPLETED
+            steps.any { it.status == Status.IN_PROGRESS } -> Status.IN_PROGRESS
+            else -> Status.PENDING
+        }
 
     enum class Status {
         PENDING, IN_PROGRESS, COMPLETED
