@@ -51,14 +51,14 @@ class UserService(
         kafkaTemplate.send("forgot-password", dto.copy(username = user.username, email = user.email, url = "http://localhost:9000/auth/reset?token=${resetPassword.token}"))
     }
 
-    fun resetPassword(token: UUID, password: String) {
+    fun resetPassword(token: UUID, password: String): User {
 
         val resetPassword = resetPasswordService.getResetPasswordByToken(token)
         val user = resetPassword.user
 
         resetPasswordService.deleteResetPassword(resetPassword)
 
-        userRepository.save(
+        return userRepository.save(
             user.copy(password = passwordEncoder.encode(password))
         )
 

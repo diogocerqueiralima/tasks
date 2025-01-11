@@ -1,5 +1,6 @@
 package com.github.diogodelima.authorizationserver.services
 
+import com.github.alpha.authorizationserver.exception.ResetPasswordNotFoundException
 import com.github.diogodelima.authorizationserver.domain.ResetPassword
 import com.github.diogodelima.authorizationserver.domain.User
 import com.github.diogodelima.authorizationserver.dto.UserForgotPasswordDto
@@ -15,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
+import java.util.UUID
 import kotlin.test.assertEquals
 
 @SpringBootTest
@@ -122,6 +124,41 @@ class UserServiceTest {
             .thenReturn(resetPassword)
 
         userService.requestEmailToResetPassword(UserForgotPasswordDto(username = "username"))
+    }
+
+    @Test
+    fun `reset password with invalid token should fail`() {
+
+        val token = UUID.randomUUID()
+
+        Mockito.`when`(resetPasswordService.getResetPasswordByToken(token))
+            .thenThrow(ResetPasswordNotFoundException())
+
+        assertThrows<ResetPasswordNotFoundException> {
+            userService.resetPassword(token, "password")
+        }
+
+    }
+
+    @Test
+    fun `reset password should succeed`() {
+
+        val passwordEncoded = "password_encoded"
+        val expected = User(username = "username", email = "username@email.com", password = passwordEncoded)
+        val token = UUID.randomUUID()
+        val resetPassword = ResetPassword(user = expected.copy(password = "old_password"), token = token)
+
+        Mockito.`when`(resetPasswordService.getResetPasswordByToken(token))
+            .thenReturn(resetPassword)
+
+        Mockito.`when`(passwordEncoder.encode("password"))
+            .thenReturn(passwordEncoded)
+
+        Mockito.`when`(userRepository.save(expected))
+            .thenReturn(expected)
+
+        val actual = userService.resetPassword(token, "password")
+        assertEquals(expected, actual)
     }
 
 }
