@@ -4,4 +4,4 @@ class TaskNotFoundException(
 
     override val message: String? = "Task not found"
 
-) : Exception(message)
+) : RuntimeException(message)

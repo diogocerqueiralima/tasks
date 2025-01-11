@@ -4,4 +4,4 @@ class StepNotFoundException(
 
     override val message: String? = "Step not found"
 
-) : Exception(message)
+) : RuntimeException(message)

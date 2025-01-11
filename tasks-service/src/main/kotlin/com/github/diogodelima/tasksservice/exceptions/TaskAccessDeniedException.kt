@@ -4,4 +4,4 @@ class TaskAccessDeniedException(
 
     override val message: String? = "Task access denied"
 
-) : Exception(message)
+) : RuntimeException(message)
