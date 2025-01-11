@@ -21,7 +21,7 @@ data class Task(
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(nullable = false)
-    val deadline: LocalDateTime = LocalDateTime.now(),
+    val deadline: LocalDateTime,
 
     @Column(nullable = false)
     val creatorId: Int,
