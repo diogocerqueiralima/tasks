@@ -44,7 +44,7 @@ paths:
                       id: 1
                       title: "Cleaning the house"
                       description: "Washing the floor, vacuuming and dusting"
-                      createdAt: "2025-01-12T16:51:45.284Z"
+                      created_at: "2025-01-12T16:51:45.284Z"
                       deadline: "2025-01-12T17:51:45.284Z"
                       steps: []
                       status: "PENDING"
@@ -58,7 +58,7 @@ paths:
                 error:
                   value:
                     message: "Task deadline too short"
-                    data: {}
+                    data: null
 components:
   schemas:
     task:
@@ -88,13 +88,13 @@ components:
         - data
       example:
         message: "Success"
-        data: {}
+        data: null
   securitySchemes:
     OAuth2:
       type: oauth2
       flows:
         authorizationCode:
-          authorizationUrl: 'https://your-authorization-server.com/oauth/authorize'
-          tokenUrl: 'https://your-authorization-server.com/oauth/token'
+          authorizationUrl: 'http://localhost:9000/oauth2/authorize'
+          tokenUrl: 'http://localhost:9000/oauth2/token'
           scopes:
             openid: default scope of OpenID
