@@ -34,4 +34,7 @@ class TaskService(
         return task
     }
 
+    fun getTasks(userId: Int) =
+        taskRepository.findTasksByCreatorId(userId)
+
 }

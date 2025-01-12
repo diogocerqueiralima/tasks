@@ -27,3 +27,13 @@ data class TaskDto(
     val status: Task.Status
 
 )
+
+fun Task.toDto() = TaskDto(
+    id = this.id,
+    title = this.title,
+    description = this.description,
+    createdAt = this.createdAt,
+    deadline = this.deadline,
+    steps = this.steps.map { it.id },
+    status = this.status
+)
