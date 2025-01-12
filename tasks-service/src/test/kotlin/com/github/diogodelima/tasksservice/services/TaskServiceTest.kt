@@ -2,6 +2,7 @@ package com.github.diogodelima.tasksservice.services
 
 import com.github.diogodelima.tasksservice.domain.Task
 import com.github.diogodelima.tasksservice.exceptions.TaskAccessDeniedException
+import com.github.diogodelima.tasksservice.exceptions.TaskDeadlineTooShortException
 import com.github.diogodelima.tasksservice.exceptions.TaskNotFoundException
 import com.github.diogodelima.tasksservice.repositories.TaskRepository
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -24,9 +25,21 @@ class TaskServiceTest {
     private lateinit var taskService: TaskService
 
     @Test
+    fun `create task with short deadline should fail`() {
+
+        val expected = Task(title = "Limpar a Casa", description = "Aspirar, lavar o chão e tirar o pó da casa", deadline = LocalDateTime.now().plusMinutes(10), creatorId = 1)
+
+        assertThrows<TaskDeadlineTooShortException> {
+            taskService.create(expected.title, expected.description, expected.deadline, expected.creatorId)
+        }
+
+        Mockito.verify(taskRepository, Mockito.never()).save(Mockito.any())
+    }
+
+    @Test
     fun `create task should succeed`() {
 
-        val expected = Task(title = "Limpar a Casa", description = "Aspirar, lavar o chão e tirar o pó da casa", deadline = LocalDateTime.now(), creatorId = 1)
+        val expected = Task(title = "Limpar a Casa", description = "Aspirar, lavar o chão e tirar o pó da casa", deadline = LocalDateTime.now().plusDays(1), creatorId = 1)
 
         Mockito.`when`(taskRepository.save(Mockito.any(Task::class.java)))
             .thenReturn(expected)
