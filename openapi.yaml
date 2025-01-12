@@ -1,0 +1,100 @@
+openapi: 3.0.3
+info:
+  title: Tasks
+  description: |-
+    This is a simple task management application API that allows users to manage tasks with different statuses, due dates, and priorities. It supports user authentication via OAuth2, allowing users to securely log in and manage their tasks.
+  version: 1.0.0
+externalDocs:
+  description: Find the source code here
+  url: https://github.com/diogocerqueiralima/tasks
+servers:
+  - url: http://localhost:9000
+tags:
+  - name: tasks
+    description: Everything about your Tasks
+  - name: steps
+    description: Details and stages of task progression
+paths:
+  /tasks:
+    post:
+      tags:
+        - tasks
+      summary: Create a task
+      operationId: createTask
+      security:
+        - OAuth2: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task'
+        required: true
+      responses:
+        '200':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              examples:
+                success:
+                  value:
+                    message: "Task created successfully"
+                    data:
+                      id: 1
+                      title: "Cleaning the house"
+                      description: "Washing the floor, vacuuming and dusting"
+                      createdAt: "2025-01-12T16:51:45.284Z"
+                      deadline: "2025-01-12T17:51:45.284Z"
+                      steps: []
+                      status: "PENDING"
+        '400':
+          description: Task deadline too short
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+              examples:
+                error:
+                  value:
+                    message: "Task deadline too short"
+                    data: {}
+components:
+  schemas:
+    task:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Cleaning the house
+        description:
+          type: string
+          example: Washing the floor, vacuuming and dusting
+        deadline:
+          type: string
+          format: date-time
+    ApiResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message for the response
+        data:
+          type: object
+          description: The actual data returned by the service
+          additionalProperties: true
+      required:
+        - message
+        - data
+      example:
+        message: "Success"
+        data: {}
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://your-authorization-server.com/oauth/authorize'
+          tokenUrl: 'https://your-authorization-server.com/oauth/token'
+          scopes:
+            openid: default scope of OpenID
