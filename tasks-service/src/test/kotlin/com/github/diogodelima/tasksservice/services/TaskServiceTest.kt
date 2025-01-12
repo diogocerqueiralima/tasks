@@ -72,4 +72,20 @@ class TaskServiceTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun `get all tasks from user should succeed`() {
+
+        val expected = listOf(
+            Task(title = "Limpar a Casa", description = "Aspirar, lavar o chão e tirar o pó da casa", deadline = LocalDateTime.now(), creatorId = 1),
+            Task(title = "Fazer os trabalhos de casa", description = "Fazer os trabalhos de casa de matemática, português e história", deadline = LocalDateTime.now(), creatorId = 1)
+        )
+
+        Mockito.`when`(taskRepository.findTasksByCreatorId(1))
+            .thenReturn(expected)
+
+        val actual = taskService.getTasks(1)
+
+        assertEquals(expected, actual)
+    }
+
 }
