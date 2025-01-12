@@ -2,6 +2,7 @@ package com.github.diogodelima.tasksservice.services
 
 import com.github.diogodelima.tasksservice.domain.Task
 import com.github.diogodelima.tasksservice.exceptions.TaskAccessDeniedException
+import com.github.diogodelima.tasksservice.exceptions.TaskDeadlineTooShortException
 import com.github.diogodelima.tasksservice.exceptions.TaskNotFoundException
 import com.github.diogodelima.tasksservice.repositories.TaskRepository
 import org.springframework.stereotype.Service
@@ -14,8 +15,12 @@ class TaskService(
 
 ) {
 
-    fun create(title: String, description: String, deadline: LocalDateTime, creatorId: Int): Task =
-        taskRepository.save(
+    fun create(title: String, description: String, deadline: LocalDateTime, creatorId: Int): Task {
+
+        if (deadline.isBefore(LocalDateTime.now().plusHours(1)))
+            throw TaskDeadlineTooShortException()
+
+        return taskRepository.save(
             Task(
                 title = title,
                 description = description,
@@ -23,6 +28,8 @@ class TaskService(
                 creatorId = creatorId
             )
         )
+
+    }
 
     fun getTaskById(id: Int, userId: Int): Task {
 
