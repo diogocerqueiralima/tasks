@@ -50,6 +50,64 @@ class TaskServiceTest {
     }
 
     @Test
+    fun `update task that does not exist should fail`() {
+
+        assertThrows<TaskNotFoundException> {
+            taskService.update(1, 1, null, null, null)
+        }
+
+        Mockito.verify(taskRepository, Mockito.never()).save(Mockito.any())
+    }
+
+    @Test
+    fun `update task that does not belong to the user, must fail`() {
+
+        val expected = Task(id = 1, title = "Limpar a Casa", description = "Aspirar, lavar o chão e tirar o pó da casa", deadline = LocalDateTime.now().plusDays(1), creatorId = 1)
+
+        Mockito.`when`(taskRepository.findById(1))
+            .thenReturn(Optional.of(expected))
+
+        assertThrows<TaskAccessDeniedException> {
+            taskService.update(1, 2, null, null, null)
+        }
+
+        Mockito.verify(taskRepository, Mockito.never()).save(Mockito.any())
+    }
+
+    @Test
+    fun `update task with short deadline should fail`() {
+
+        val createdAt = LocalDateTime.now()
+        val expected = Task(id = 1, title = "Limpar a Casa", description = "Aspirar, lavar o chão e tirar o pó da casa", createdAt = createdAt, deadline = LocalDateTime.now().plusDays(1), creatorId = 1)
+
+        Mockito.`when`(taskRepository.findById(1))
+            .thenReturn(Optional.of(expected))
+
+        assertThrows<TaskDeadlineTooShortException> {
+            taskService.update(1, 1, null, null, createdAt.plusMinutes(30))
+        }
+
+        Mockito.verify(taskRepository, Mockito.never()).save(Mockito.any())
+    }
+
+    @Test
+    fun `update task should succeed`() {
+
+        val createdAt = LocalDateTime.now()
+        val expected = Task(id = 1, title = "Limpar a Casa", description = "Aspirar, lavar o chão e tirar o pó da casa", createdAt = createdAt, deadline = createdAt.plusDays(1), creatorId = 1)
+
+        Mockito.`when`(taskRepository.findById(1))
+            .thenReturn(Optional.of(expected))
+
+        Mockito.`when`(taskRepository.save(Mockito.any(Task::class.java)))
+            .thenReturn(expected)
+
+        val actual = taskService.update(1, 1, null, null, createdAt.plusDays(1))
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `get task by id that does not exist should fail`() {
 
         assertThrows<TaskNotFoundException> {
