@@ -1,10 +1,7 @@
 package com.github.diogodelima.tasksservice.controller
 
 import com.github.diogodelima.tasksservice.domain.Task
-import com.github.diogodelima.tasksservice.dto.ApiResponseDto
-import com.github.diogodelima.tasksservice.dto.TaskCreateDto
-import com.github.diogodelima.tasksservice.dto.TaskDto
-import com.github.diogodelima.tasksservice.dto.toDto
+import com.github.diogodelima.tasksservice.dto.*
 import com.github.diogodelima.tasksservice.services.TaskService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -34,6 +31,26 @@ class TaskController(
             .body(
                 ApiResponseDto(
                     message = "Task created successfully",
+                    data = task.toDto()
+                )
+            )
+    }
+
+    @PutMapping("/{id}")
+    fun update(@RequestBody @Valid dto: TaskUpdateDto, @RequestHeader("User-Id") userId: Int): ResponseEntity<ApiResponseDto<TaskDto>> {
+
+        val task = taskService.update(
+            id = dto.id,
+            userId = userId,
+            title = dto.title,
+            description = dto.description,
+            deadline = dto.deadline
+        )
+
+        return ResponseEntity
+            .ok(
+                ApiResponseDto(
+                    message = "Task updated successfully",
                     data = task.toDto()
                 )
             )

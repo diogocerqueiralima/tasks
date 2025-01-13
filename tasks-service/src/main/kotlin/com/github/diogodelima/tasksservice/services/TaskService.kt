@@ -31,6 +31,33 @@ class TaskService(
 
     }
 
+    fun update(id: Int, userId: Int, title: String?, description: String?, deadline: LocalDateTime?): Task {
+
+        val task = taskRepository.findById(id).orElseThrow { TaskNotFoundException() }
+
+        if (task.creatorId != userId)
+            throw TaskAccessDeniedException()
+
+        deadline?.let {
+
+            if (it.isBefore(LocalDateTime.now().plusHours(1)))
+                throw TaskDeadlineTooShortException()
+
+        }
+
+        return taskRepository.save(
+            Task(
+                id = task.id,
+                title = title ?: task.title,
+                description = description ?: task.description,
+                createdAt = task.createdAt,
+                deadline = deadline ?: task.deadline,
+                steps = task.steps,
+                creatorId = task.creatorId
+            )
+        )
+    }
+
     fun getTaskById(id: Int, userId: Int): Task {
 
         val task = taskRepository.findById(id).orElseThrow { TaskNotFoundException() }
