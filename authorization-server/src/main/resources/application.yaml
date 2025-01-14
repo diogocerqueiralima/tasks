@@ -23,9 +23,12 @@ server:
   port: 9000
 
 client:
-  id: ${CLIENT_ID}
-  redirect:
-    uri: ${CLIENT_REDIRECT_URI}
+  postman:
+    id: ${POSTMAN_CLIENT_ID}
+    redirectUri: ${POSTMAN_CLIENT_REDIRECT_URI}
+  react:
+    id: ${REACT_CLIENT_ID}
+    redirectUri: ${REACT_CLIENT_REDIRECT_URI}
 
 logging:
   level:

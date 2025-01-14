@@ -1,6 +1,5 @@
 package com.github.diogodelima.authorizationserver.config
 
-import com.github.diogodelima.authorizationserver.domain.User
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
@@ -18,6 +17,9 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
 
 
 @Configuration
@@ -48,6 +50,7 @@ class SecurityConfig {
                         }
                     }
             }
+            .addFilterBefore(corsFilter(), CorsFilter::class.java)
             .authorizeHttpRequests { request ->
                 request.anyRequest().authenticated()
             }
@@ -82,5 +85,19 @@ class SecurityConfig {
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
+
+    @Bean
+    fun corsFilter(): CorsFilter {
+        val corsConfig = CorsConfiguration()
+        corsConfig.allowCredentials = true
+        corsConfig.addAllowedOrigin("http://localhost:3000")
+        corsConfig.addAllowedHeader("*")
+        corsConfig.addAllowedMethod("*")
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", corsConfig)
+
+        return CorsFilter(source)
+    }
 
 }

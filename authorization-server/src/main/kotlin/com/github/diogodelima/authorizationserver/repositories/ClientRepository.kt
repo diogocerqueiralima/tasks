@@ -15,22 +15,29 @@ import java.util.*
 @Configuration
 class ClientRepository(
 
-    @Value("\${client.id}")
-    private val clientId: String,
+    @Value("\${client.postman.id}")
+    private val postmanClientId: String,
 
-    @Value("\${client.redirect.uri}")
-    private val redirectUri: String
+    @Value("\${client.postman.redirectUri}")
+    private val postmanRedirectUri: String,
+
+    @Value("\${client.react.id}")
+    private val reactClientId: String,
+
+    @Value("\${client.react.redirectUri}")
+    private val reactRedirectUri: String
 
 ) {
 
     @Bean
     fun registeredClientRepository(): RegisteredClientRepository {
-        val oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
-            .clientId(clientId)
+
+        val postmanClient = RegisteredClient.withId(UUID.randomUUID().toString())
+            .clientId(postmanClientId)
             .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-            .redirectUri(redirectUri)
+            .redirectUri(postmanRedirectUri)
             .scope(OidcScopes.OPENID)
             .clientSettings(
                 ClientSettings.builder()
@@ -40,7 +47,22 @@ class ClientRepository(
             )
             .build()
 
-        return InMemoryRegisteredClientRepository(oidcClient)
+        val reactClient = RegisteredClient.withId(UUID.randomUUID().toString())
+            .clientId(reactClientId)
+            .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+            .redirectUri(reactRedirectUri)
+            .scope(OidcScopes.OPENID)
+            .clientSettings(
+                ClientSettings.builder()
+                    .requireAuthorizationConsent(false)
+                    .requireProofKey(true)
+                    .build()
+            )
+            .build()
+
+        return InMemoryRegisteredClientRepository(postmanClient, reactClient)
     }
 
 }
