@@ -1,6 +1,6 @@
 # Tasks
 
-This is a simple task management application API that allows users to manage tasks with different statuses, due dates, and priorities. It supports user authentication via OAuth2, allowing users to securely log in and manage their tasks.
+This is a simple task management application API that allows users to manage tasks with different status, due dates, and priorities. It supports user authentication via OAuth2, allowing users to securely log in and manage their tasks.
 
 # Features
 
