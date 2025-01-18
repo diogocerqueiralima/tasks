@@ -1,15 +1,17 @@
 package com.github.diogodelima.tasksservice.controller
 
-import com.github.diogodelima.tasksservice.domain.Task
 import com.github.diogodelima.tasksservice.dto.*
 import com.github.diogodelima.tasksservice.services.TaskService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/tasks")
+@CrossOrigin
 class TaskController(
 
     private val taskService: TaskService
@@ -17,13 +19,16 @@ class TaskController(
 ) {
 
     @PostMapping
-    fun create(@RequestBody @Valid dto: TaskCreateDto, @RequestHeader("User-Id") userId: Int): ResponseEntity<ApiResponseDto<TaskDto>> {
+    fun create(@RequestBody @Valid dto: TaskCreateDto): ResponseEntity<ApiResponseDto<TaskDto>> {
+
+        val jwt = SecurityContextHolder.getContext().authentication.principal as Jwt
+        val userId = jwt.getClaimAsString("user_id")
 
         val task = taskService.create(
             title = dto.title,
             description = dto.description,
             deadline = dto.deadline,
-            creatorId = userId
+            creatorId = userId.toInt()
         )
 
         return ResponseEntity
@@ -37,11 +42,14 @@ class TaskController(
     }
 
     @PutMapping("/{id}")
-    fun update(@RequestBody @Valid dto: TaskUpdateDto, @RequestHeader("User-Id") userId: Int): ResponseEntity<ApiResponseDto<TaskDto>> {
+    fun update(@RequestBody @Valid dto: TaskUpdateDto): ResponseEntity<ApiResponseDto<TaskDto>> {
+
+        val jwt = SecurityContextHolder.getContext().authentication.principal as Jwt
+        val userId = jwt.getClaimAsString("user_id")
 
         val task = taskService.update(
             id = dto.id,
-            userId = userId,
+            userId = userId.toInt(),
             title = dto.title,
             description = dto.description,
             deadline = dto.deadline
@@ -57,9 +65,11 @@ class TaskController(
     }
 
     @GetMapping("/{id}")
-    fun getTaskById(@PathVariable("id") id: Int, @RequestHeader("User-Id") userId: Int): ResponseEntity<ApiResponseDto<TaskDto>> {
+    fun getTaskById(@PathVariable("id") id: Int): ResponseEntity<ApiResponseDto<TaskDto>> {
 
-        val task = taskService.getTaskById(id, userId)
+        val jwt = SecurityContextHolder.getContext().authentication.principal as Jwt
+        val userId = jwt.getClaimAsString("user_id")
+        val task = taskService.getTaskById(id, userId.toInt())
 
         return ResponseEntity
             .ok(
@@ -71,13 +81,18 @@ class TaskController(
     }
 
     @GetMapping
-    fun getTasks(@RequestHeader("User-Id") userId: Int): ResponseEntity<ApiResponseDto<List<TaskDto>>> =
-        ResponseEntity
+    fun getTasks(): ResponseEntity<ApiResponseDto<List<TaskDto>>> {
+
+        val jwt = SecurityContextHolder.getContext().authentication.principal as Jwt
+        val userId = jwt.getClaimAsString("user_id")
+
+        return ResponseEntity
             .ok(
                 ApiResponseDto(
                     message = "Tasks retrieved successfully",
-                    data = taskService.getTasks(userId).map { it.toDto() }
+                    data = taskService.getTasks(userId.toInt()).map { it.toDto() }
                 )
             )
+    }
 
 }

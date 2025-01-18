@@ -1,12 +1,38 @@
 spring:
   application:
     name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: tasks-service
+          uri: http://tasks-service:8080
+          predicates:
+            - Path=/tasks/**
+          filters:
+            - TokenRelay=
+            - RemoveRequestHeader=Origin
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://authorization-server:9000
+      client:
+        registration:
+          spring:
+            provider: spring
+            client-id: ${BFF_CLIENT_ID}
+            client-secret: ${BFF_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: ${BFF_CLIENT_REDIRECT_URI}
+            scope: openid
+            client-name: spring
+        provider:
+          spring:
+            issuer-uri: http://authorization-server:9000
+            authorization-uri: http://localhost:9000/oauth2/authorize
 
 logging:
   level:
     org.springframework.security: DEBUG
+    org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
+    org.springframework.web.filter.CommonsRequestLoggingFilter: TRACE
+    org.springframework.security.web.authentication: TRACE
+    org.springframework.security.oauth2: TRACE
+    org.springframework.web.cors: TRACE

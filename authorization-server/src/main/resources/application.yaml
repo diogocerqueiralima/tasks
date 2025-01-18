@@ -26,9 +26,10 @@ client:
   postman:
     id: ${POSTMAN_CLIENT_ID}
     redirectUri: ${POSTMAN_CLIENT_REDIRECT_URI}
-  react:
-    id: ${REACT_CLIENT_ID}
-    redirectUri: ${REACT_CLIENT_REDIRECT_URI}
+  bff:
+    id: ${BFF_CLIENT_ID}
+    secret: ${BFF_CLIENT_SECRET}
+    redirectUri: ${BFF_CLIENT_REDIRECT_URI}
 
 logging:
   level:
@@ -36,3 +37,4 @@ logging:
     org.springframework.security.oauth2: DEBUG
     org.springframework.security.web: DEBUG
     org.springframework.security.oauth2.server.authorization: DEBUG
+    org.springframework.web.cors: DEBUG

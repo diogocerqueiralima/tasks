@@ -63,6 +63,8 @@ services:
       - email-service
       - authorization-server
       - tasks-service
+    env_file:
+      - .env
 
 networks:
   network:

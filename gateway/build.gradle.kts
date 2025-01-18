@@ -21,9 +21,9 @@ repositories {
 extra["springCloudVersion"] = "2024.0.0"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("io.projectreactor:reactor-test")

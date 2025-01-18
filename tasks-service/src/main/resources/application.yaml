@@ -11,3 +11,17 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://authorization-server:9000
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web.reactive.function.client.ExchangeFunctions: TRACE
+    org.springframework.web.filter.CommonsRequestLoggingFilter: TRACE
+    org.springframework.security.web.authentication: TRACE
+    org.springframework.security.oauth2: TRACE
+    org.springframework.web.cors: DEBUG
