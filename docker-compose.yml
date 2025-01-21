@@ -35,6 +35,12 @@ services:
       - "9000:9000"
     networks:
       - network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     env_file:
       - .env
     depends_on:
@@ -60,9 +66,12 @@ services:
     networks:
       - network
     depends_on:
-      - email-service
-      - authorization-server
-      - tasks-service
+      email-service:
+        condition: service_started
+      authorization-server:
+        condition: service_healthy
+      tasks-service:
+        condition: service_started
     env_file:
       - .env
 
