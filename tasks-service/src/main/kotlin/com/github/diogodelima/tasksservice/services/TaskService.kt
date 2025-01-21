@@ -15,7 +15,7 @@ class TaskService(
 
 ) {
 
-    fun create(title: String, description: String, deadline: LocalDateTime, creatorId: Int): Task {
+    fun create(title: String, description: String, deadline: LocalDateTime, tags: List<Task.Tag>, creatorId: Int): Task {
 
         if (deadline.isBefore(LocalDateTime.now().plusHours(1)))
             throw TaskDeadlineTooShortException()
@@ -25,13 +25,14 @@ class TaskService(
                 title = title,
                 description = description,
                 deadline = deadline,
+                tags = tags,
                 creatorId = creatorId
             )
         )
 
     }
 
-    fun update(id: Int, userId: Int, title: String?, description: String?, deadline: LocalDateTime?): Task {
+    fun update(id: Int, userId: Int, title: String?, description: String?, deadline: LocalDateTime?, tags: List<Task.Tag>?): Task {
 
         val task = taskRepository.findById(id).orElseThrow { TaskNotFoundException() }
 
@@ -53,7 +54,8 @@ class TaskService(
                 createdAt = task.createdAt,
                 deadline = deadline ?: task.deadline,
                 steps = task.steps,
-                creatorId = task.creatorId
+                creatorId = task.creatorId,
+                tags = tags ?: task.tags
             )
         )
     }

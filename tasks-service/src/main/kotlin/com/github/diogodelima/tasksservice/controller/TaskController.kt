@@ -28,6 +28,7 @@ class TaskController(
             title = dto.title,
             description = dto.description,
             deadline = dto.deadline,
+            tags = dto.tags,
             creatorId = userId.toInt()
         )
 
@@ -52,7 +53,8 @@ class TaskController(
             userId = userId.toInt(),
             title = dto.title,
             description = dto.description,
-            deadline = dto.deadline
+            deadline = dto.deadline,
+            tags = dto.tags
         )
 
         return ResponseEntity

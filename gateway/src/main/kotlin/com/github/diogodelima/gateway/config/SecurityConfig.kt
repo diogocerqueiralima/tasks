@@ -27,6 +27,7 @@ class SecurityConfig {
                     corsConfiguration
                 }
             }
+            .csrf { it.disable() }
             .authorizeExchange {
                 it.anyExchange().authenticated()
             }

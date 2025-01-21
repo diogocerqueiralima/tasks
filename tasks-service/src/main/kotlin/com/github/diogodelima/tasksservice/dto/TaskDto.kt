@@ -24,7 +24,9 @@ data class TaskDto(
 
     val steps: List<Int>,
 
-    val status: Task.Status
+    val status: Task.Status,
+
+    val tags: List<Task.Tag>
 
 )
 
@@ -35,5 +37,6 @@ fun Task.toDto() = TaskDto(
     createdAt = this.createdAt,
     deadline = this.deadline,
     steps = this.steps.map { it.id },
-    status = this.status
+    status = this.status,
+    tags = this.tags
 )

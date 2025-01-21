@@ -27,7 +27,11 @@ data class Task(
     val creatorId: Int,
 
     @OneToMany(fetch = FetchType.EAGER, cascade = [(CascadeType.ALL)], mappedBy = "task", orphanRemoval = true)
-    val steps: List<Step> = emptyList()
+    val steps: List<Step> = emptyList(),
+
+    @Enumerated
+    @ElementCollection
+    val tags: List<Tag>
 
 ) {
 
@@ -40,6 +44,10 @@ data class Task(
 
     enum class Status {
         PENDING, IN_PROGRESS, COMPLETED
+    }
+
+    enum class Tag {
+        PERSONAL, WORK, STUDY, PROJECT, FAMILY, HEALTH, FINANCE
     }
 
 }
