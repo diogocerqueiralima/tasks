@@ -29,10 +29,13 @@ class SecurityConfig {
             }
             .csrf { it.disable() }
             .authorizeExchange {
-                it.anyExchange().authenticated()
+                it
+                    .anyExchange().authenticated()
             }
             .oauth2Login { oauth2 ->
-                oauth2.authenticationSuccessHandler(authenticationSuccessHandler())
+                oauth2
+                    .loginPage("/oauth2/authorization/spring")
+                    .authenticationSuccessHandler(authenticationSuccessHandler())
             }
             .build()
 

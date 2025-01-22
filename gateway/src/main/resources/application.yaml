@@ -28,6 +28,11 @@ spring:
             issuer-uri: http://authorization-server:9000
             authorization-uri: http://localhost:9000/oauth2/authorize
 
+server:
+  error:
+    whitelabel:
+      enabled: false
+
 logging:
   level:
     org.springframework.security: DEBUG
