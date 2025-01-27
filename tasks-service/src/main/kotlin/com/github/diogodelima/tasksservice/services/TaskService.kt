@@ -32,12 +32,22 @@ class TaskService(
 
     }
 
-    fun update(id: Int, userId: Int, title: String?, description: String?, deadline: LocalDateTime?, tags: List<Task.Tag>?): Task {
+    fun getTaskById(id: Int, userId: Int): Task {
 
         val task = taskRepository.findById(id).orElseThrow { TaskNotFoundException() }
 
         if (task.creatorId != userId)
             throw TaskAccessDeniedException()
+
+        return task
+    }
+
+    fun getTasks(userId: Int) =
+        taskRepository.findTasksByCreatorId(userId)
+
+    fun update(id: Int, userId: Int, title: String?, description: String?, deadline: LocalDateTime?, tags: List<Task.Tag>?): Task {
+
+        val task = getTaskById(id, userId)
 
         deadline?.let {
 
@@ -60,17 +70,11 @@ class TaskService(
         )
     }
 
-    fun getTaskById(id: Int, userId: Int): Task {
+    fun delete(id: Int, userId: Int) {
 
-        val task = taskRepository.findById(id).orElseThrow { TaskNotFoundException() }
+        val task = getTaskById(id, userId)
 
-        if (task.creatorId != userId)
-            throw TaskAccessDeniedException()
-
-        return task
+        taskRepository.delete(task)
     }
-
-    fun getTasks(userId: Int) =
-        taskRepository.findTasksByCreatorId(userId)
 
 }

@@ -97,4 +97,19 @@ class TaskController(
             )
     }
 
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Int): ResponseEntity<ApiResponseDto<Any>> {
+
+        val jwt = SecurityContextHolder.getContext().authentication.principal as Jwt
+        val userId = jwt.getClaimAsString("user_id")
+
+        return ResponseEntity
+            .ok(
+                ApiResponseDto(
+                    message = "Task deleted successfully",
+                    data = taskService.delete(id, userId.toInt())
+                )
+            )
+    }
+
 }
