@@ -4,14 +4,14 @@ This is a simple task management application API that allows users to manage tas
 
 # Features
 
-- User Authentication: OAuth2-based login using authorization code flow with PKCE.
+- User Authentication: OAuth2-based login using authorization code grant flow.
 - Reset Password: via registered e-mail
 - Task Management: [CRUD](https://www.codecademy.com/article/what-is-crud)
 
 # Technologies
 
 - Application: [Spring Boot](https://spring.io/projects/spring-boot) ([Kotlin](https://kotlinlang.org/))
-- Authentication: [OAuth2](https://oauth.net/2/), Authorization Code with PKCE
+- Authentication: [OAuth2](https://oauth.net/2/), Authorization Code Grant Flow
 - Database: [PostgreSQL](https://www.postgresql.org/)
 - API Documentation: [Swagger](https://swagger.io/)
 - Build Tools: [Gradle](https://gradle.org/)
